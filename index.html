@@ -3,130 +3,305 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Video Weave - Premium Automated AI Studio</title>
-  <!-- Tailwind CSS v4 CDN -->
-  <script src="https://jsdelivr.net"></script>
+  <title>AI Video Weave - Premium Web Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #060913; font-family: 'Segoe UI', system-ui, sans-serif; color: #E2E8F0; }
-    .glass-card { background: rgba(11, 17, 32, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
-    .neon-glow-purple { box-shadow: 0 0 30px rgba(139, 92, 246, 0.25); }
-    .btn-gradient { background: linear-gradient(135deg, #7C3AED 0%, #DB2777 100%); }
-    .btn-gradient-gold { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
-    .ratio-btn.active { border-color: #C084FC; background: rgba(139, 92, 246, 0.15); color: #FFF; font-weight: bold; }
-    .mode-btn.active { background: #7C3AED; color: white; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
-    .variant-card.selected { border-color: #EC4899; background: rgba(219, 39, 119, 0.1); box-shadow: 0 0 15px rgba(219, 39, 119, 0.3); }
+    .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+    .ratio-btn.active { border-color: #C084FC; background: rgba(139, 92, 246, 0.2); color: #FFF; font-weight: bold; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3); }
+    .btn-pro { background: linear-gradient(135deg, #7C3AED 0%, #DB2777 100%); transition: all 0.3s ease; }
+    .btn-pro:hover { box-shadow: 0 0 20px rgba(219, 39, 119, 0.5); transform: translateY(-2px); }
+    
+    .loader { border: 3px solid rgba(255,255,255,0.1); border-top-color: #DB2777; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+<body class="p-4 md:p-8 max-w-7xl mx-auto space-y-6 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]">
 
-  <!-- Monetization Top Slot (Google AdSense Placeholder) -->
-  <div class="w-full glass-card py-3 px-4 rounded-xl text-center text-xs text-gray-500 border border-dashed border-gray-800 tracking-wider">
-    ADVERTISEMENT PLACEHOLDER (GOOGLE ADSENSE TOP BANNER SLOT)
-  </div>
-
-  <!-- Premium Header -->
-  <header class="text-center mb-4">
-    <div class="inline-block px-3 py-1 bg-violet-950/50 border border-violet-800 rounded-full text-[10px] text-violet-400 font-bold tracking-widest uppercase mb-2">
-      Zero Server Cost • Distributed Client-Side Architecture
+  <header class="text-center mb-6 mt-4">
+    <div class="inline-block px-4 py-1 bg-purple-900/30 border border-purple-700/50 rounded-full text-xs text-purple-300 font-bold tracking-widest uppercase mb-3 shadow-[0_0_10px_rgba(147,51,234,0.3)]">
+      100% Free Cloud Engine • Client-Side App
     </div>
-    <h1 class="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-500 bg-clip-text text-transparent uppercase">AI VIDEO WEAVE</h1>
-    <p class="text-gray-400 mt-1 text-xs md:text-sm">Next-Gen Cinema Weaving Production Suite Powered By Hugging Face Cloud Free Net</p>
+    <h1 class="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-500 bg-clip-text text-transparent uppercase drop-shadow-lg">
+      AI Video Weave
+    </h1>
+    <p class="text-gray-400 mt-2 text-sm">Professional Text-to-Video & Audio Production Suite</p>
   </header>
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-    <!-- LEFT PANEL: STUDIO CONFIGURATIONS (7 Columns) -->
+    <!-- LEFT PANEL -->
     <main class="lg:col-span-7 space-y-6">
       
-      <!-- 1. Gateway Security (Token Saver) -->
-      <section class="glass-card p-5 rounded-2xl shadow-xl">
-        <h2 class="text-sm font-bold text-violet-400 mb-2 flex items-center gap-2">🛡️ 1. Secured Access Engine</h2>
-        <p class="text-[11px] text-gray-400 mb-3">Paste your Hugging Face WRITE access token. It is stored securely on your browser cache.</p>
+      <!-- Security -->
+      <section class="glass-card p-6 rounded-2xl">
+        <h2 class="text-sm font-bold text-violet-400 mb-2 flex items-center gap-2">🛡️ Secured API Access</h2>
         <div class="flex gap-2">
-          <input id="hf-token" type="password" placeholder="Paste your personal free Hugging Face token (hf_...)" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-violet-500 text-gray-200">
-          <button id="btn-save-token" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 rounded-xl transition-all whitespace-nowrap cursor-pointer">Lock Engine</button>
+          <input id="hf-token" type="password" placeholder="Paste your free Hugging Face token (hf_...)" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500 text-gray-200 transition">
+          <button onclick="saveToken()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-5 rounded-xl transition shadow-lg">Save Token</button>
         </div>
       </section>
 
-      <!-- 2. AI Production Mode (Direct vs Director Switcher) -->
-      <section class="glass-card p-4 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Production Workflow Engine</h3>
-          <p class="text-[11px] text-gray-500">Choose between immediate rendering or granular scene variations selection.</p>
-        </div>
-        <div class="grid grid-cols-2 gap-2 bg-gray-950 p-1 border border-gray-800 rounded-xl w-full sm:w-auto">
-          <button id="mode-direct" class="mode-btn active px-4 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all text-center" data-mode="DIRECT">Direct Live Mode</button>
-          <button id="mode-director" class="mode-btn px-4 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all text-center text-gray-400" data-mode="DIRECTOR">AI Director Mode</button>
-        </div>
-      </section>
-
-      <!-- 3. AI Studio Configuration Form -->
-      <section class="glass-card p-5 rounded-2xl shadow-xl space-y-4">
-        <h2 class="text-sm font-bold text-fuchsia-400 flex items-center gap-2">🎬 2. Advanced Multi-Scene Production Suite</h2>
+      <!-- Director Suite -->
+      <section class="glass-card p-6 rounded-2xl space-y-5">
+        <h2 class="text-sm font-bold text-fuchsia-400 flex items-center gap-2">🎬 Master Director Settings</h2>
         
-        <!-- Video Script Prompt -->
         <div>
-          <label class="block text-[10px] font-bold text-gray-400 mb-1 tracking-wider uppercase">Visual Movie Script (AI splits long paragraphs into chunks)</label>
-          <textarea id="video-prompt" rows="3" placeholder="A futuristic warrior standing over a cybernetic cliff. Next, the horizon erupts into neon light storm. Hyper-realistic cinematic rendering..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs focus:outline-none focus:border-fuchsia-500 leading-relaxed text-gray-300"></textarea>
-          <button id="btn-enhance-prompt" class="mt-2 text-[10px] text-purple-400 hover:text-purple-300 font-bold uppercase tracking-wider bg-purple-950/30 border border-purple-900/50 px-3 py-1 rounded-md cursor-pointer transition-all">✨ AI Prompt Enhancer</button>
+          <label class="block text-xs font-bold text-gray-400 mb-2 tracking-wider uppercase">Visual Script / Voice Text</label>
+          <textarea id="main-prompt" rows="3" placeholder="Describe your scene or text here..." class="w-full bg-gray-900 border border-gray-700 rounded-xl p-4 text-sm focus:outline-none focus:border-fuchsia-500 text-gray-200 transition"></textarea>
         </div>
 
-        <!-- Dedicated Audio Voice Box -->
         <div>
-          <label class="block text-[10px] font-bold text-gray-400 mb-1 tracking-wider uppercase">Dedicated Narration Dialogue Text Track (Text-to-Speech)</label>
-          <textarea id="voice-prompt" rows="2" placeholder="Welcome to the future of neural cinematography. Witness the power of distributed web-scale client frameworks..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs focus:outline-none focus:border-fuchsia-500 text-gray-300"></textarea>
-        </div>
-
-        <!-- Target Aspect Ratios Layout -->
-        <div>
-          <label class="block text-[10px] font-bold text-gray-400 mb-1.5 tracking-wider uppercase">Target Layout Resolution Canvas</label>
-          <div class="grid grid-cols-3 gap-2">
-            <button class="ratio-btn active border border-gray-800 rounded-xl py-2.5 text-center text-[11px] transition-all flex flex-col items-center justify-center gap-1 text-gray-400 cursor-pointer" data-ratio="16:9">
-              <span class="w-5 h-3 bg-gray-800 border border-gray-700 rounded-sm block"></span> 16:9 YouTube / Film
-            </button>
-            <button class="ratio-btn border border-gray-800 rounded-xl py-2.5 text-center text-[11px] transition-all flex flex-col items-center justify-center gap-1 text-gray-400 cursor-pointer" data-ratio="9:16">
-              <span class="w-3 h-5 bg-gray-800 border border-gray-700 rounded-sm block"></span> 9:16 Shorts / Reels
-            </button>
-            <button class="ratio-btn border border-gray-800 rounded-xl py-2.5 text-center text-[11px] transition-all flex flex-col items-center justify-center gap-1 text-gray-400 cursor-pointer" data-ratio="1:1">
-              <span class="w-4 h-4 bg-gray-800 border border-gray-700 rounded-sm block"></span> 1:1 Square Post
-            </button>
+          <label class="block text-xs font-bold text-gray-400 mb-2 tracking-wider uppercase">Frame Size</label>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="setRatio(this, '16:9')" class="ratio-btn active border border-gray-700 rounded-xl py-3 text-xs font-bold transition">📺 YouTube (16:9)</button>
+            <button onclick="setRatio(this, '9:16')" class="ratio-btn border border-gray-700 rounded-xl py-3 text-xs font-bold transition">📱 Reels (9:16)</button>
+            <button onclick="setRatio(this, '1:1')" class="ratio-btn border border-gray-700 rounded-xl py-3 text-xs font-bold transition">🔳 Square (1:1)</button>
           </div>
         </div>
 
-        <!-- Media Output Mode Matrix -->
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-[10px] font-bold text-gray-400 mb-1 tracking-wider uppercase">Visual Pipeline</label>
-            <select id="render-pipeline" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-gray-300 focus:outline-none">
-              <option value="VIDEO">Video Clip Mode</option>
-              <option value="SLIDE">SD Slide Mode</option>
+            <label class="block text-xs font-bold text-gray-400 mb-2 tracking-wider uppercase">Art Style</label>
+            <select id="art-style" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-gray-200 focus:outline-none">
+              <option value="Cinematic, Highly Detailed, 8k resolution">Cinematic Realism</option>
+              <option value="3D Animation, Pixar Style, Unreal Engine 5">3D Animation</option>
+              <option value="Anime Studio Ghibli Style, Masterpiece">Anime / Ghibli</option>
+              <option value="Cyberpunk Neon, High Contrast Glow">Cyberpunk Dark</option>
             </select>
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-gray-400 mb-1 tracking-wider uppercase">Vocal Engine</label>
-            <select id="voice-gender" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-gray-300 focus:outline-none">
-              <option value="facebook/mms-tts-eng">Male (MMS English)</option>
-              <option value="espnet/kan-bayashi_ljspeech_vits">Female (LJSpeech)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-gray-400 mb-1 tracking-wider uppercase">Visual Profile</label>
-            <select id="video-style" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-gray-300 focus:outline-none">
-              <option value="3D Hyper-Realistic, 8k, Unreal Engine 5">3D Realistic</option>
-              <option value="Cinematic film stock, Hollywood Panavision lighting">Cinematic 8K</option>
-              <option value="Anime masterpiece style, studio ghibli aesthetic">Anime / Ghibli</option>
-              <option value="Cyberpunk neon heavy mood, high contrast glow">Cyberpunk Neon</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-gray-400 mb-1 tracking-wider uppercase">Motion Speed</label>
-            <select id="video-speed" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-gray-300 focus:outline-none">
-              <option value="24fps slow motion cinematic">Slow Motion (24fps)</option>
-              <option value="30fps standard motion vlogging">Standard (30fps)</option>
-              <option value="60fps hyper-smooth action swift camera">Hyper-Smooth (60fps)</option>
+            <label class="block text-xs font-bold text-gray-400 mb-2 tracking-wider uppercase">Voice Engine</label>
+            <select id="voice-engine" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-gray-200 focus:outline-none">
+              <option value="facebook/mms-tts-eng">MMS English (Pro)</option>
             </select>
           </div>
         </div>
 
-        <!-- Master Core Operational Action Trigger Buttons -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          <button id="btn-generate-video" class="btn-gradient hover:opacity-95 neon-glow-purple text-white font-black text-xs py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider">⚡ Generate & Weave Master Video</button>
+        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-800">
+          <button onclick="generateMedia('video')" id="btn-video" class="btn-pro text-white font-extrabold py-4 rounded-xl text-sm shadow-lg">🎬 Generate Video</button>
+          <button onclick="generateMedia('audio')" id="btn-audio" class="bg-gray-800 border border-gray-600 hover:bg-gray-700 text-white font-extrabold py-4 rounded-xl text-sm transition">🎙️ Generate Voice</button>
+        </div>
+        
+        <div id="status-container" class="hidden flex items-center justify-center gap-3 bg-gray-900/50 p-3 rounded-lg border border-gray-700">
+          <div class="loader" id="loading-spinner"></div>
+          <span id="status-text" class="text-sm font-bold text-violet-400">Initializing Engine...</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="lg:col-span-5 space-y-6 flex flex-col">
+      
+      <!-- Live Preview -->
+      <section class="glass-card p-6 rounded-2xl flex-1 flex flex-col">
+        <h2 class="text-sm font-bold text-pink-400 mb-4 flex items-center gap-2 border-b border-gray-700 pb-2">📺 Studio Monitor</h2>
+        
+        <div class="flex-1 bg-black/90 rounded-xl border border-gray-700 relative overflow-hidden min-h-[250px] flex items-center justify-center p-2 shadow-inner">
+          <video id="out-video" class="w-full h-full object-contain hidden rounded-lg" controls autoplay></video>
+          <audio id="out-audio" class="w-full hidden" controls autoplay></audio>
+          <div id="out-placeholder" class="text-gray-500 text-sm text-center flex flex-col items-center gap-2">
+            <span class="text-4xl mb-2">🎞️</span> Output Preview
+          </div>
+        </div>
+        
+        <div id="action-btns" class="mt-5 flex gap-3 hidden">
+          <button id="btn-download" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 py-3 rounded-xl text-sm font-bold shadow-lg transition">⬇️ Save to Gallery</button>
+          <button onclick="saveToLibrary()" class="flex-1 bg-gray-700 hover:bg-gray-600 border border-gray-500 py-3 rounded-xl text-sm font-bold shadow-lg transition">💾 Add to Library</button>
+        </div>
+      </section>
+
+      <!-- History Library -->
+      <section class="glass-card p-6 rounded-2xl min-h-[300px] flex flex-col">
+        <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
+          <h2 class="text-sm font-bold text-gray-300">📚 Local Studio Library</h2>
+          <button onclick="clearLibrary()" class="text-xs bg-red-500/20 text-red-400 hover:bg-red-500/40 border border-red-500/50 px-3 py-1 rounded transition font-bold">Clear All</button>
+        </div>
+        <div id="library-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto max-h-[400px] pr-2 flex-1 content-start">
+          <p class="text-xs text-gray-500 col-span-full text-center mt-4">Library is empty. Generate and save media.</p>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <script>
+    const API_VID = "https://api-inference.huggingface.co/models/damo-vilab/text-to-video-ms-1.7b";
+    const API_AUD = "https://api-inference.huggingface.co/models/facebook/mms-tts-eng";
+    
+    let activeRatio = "16:9";
+    let currentBlob = null;
+    let currentType = null;
+    let library = [];
+    let progressInterval = null;
+
+    window.onload = () => {
+      const savedToken = localStorage.getItem('hf_token');
+      if(savedToken) document.getElementById('hf-token').value = savedToken;
+    };
+
+    function saveToken() {
+      const token = document.getElementById('hf-token').value.trim();
+      if(token) {
+        localStorage.setItem('hf_token', token);
+        alert("✅ Token saved securely!");
+      }
+    }
+
+    function setRatio(btn, ratio) {
+      document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeRatio = ratio;
+    }
+
+    function startProgressText(type) {
+      const texts = type === 'video' 
+        ? ["Analyzing Script...", "Setting Camera Angles...", "Generating AI Frames...", "Stitching Video...", "Finalizing HD Render..."]
+        : ["Analyzing Text...", "Generating Neural Voice...", "Enhancing Audio Quality..."];
+      let i = 0;
+      const statusEl = document.getElementById('status-text');
+      statusEl.innerText = texts[0];
+      progressInterval = setInterval(() => {
+        i = (i + 1) % texts.length;
+        statusEl.innerText = texts[i];
+      }, 4000);
+    }
+
+    async function generateMedia(type) {
+      let prompt = document.getElementById('main-prompt').value.trim();
+      const token = document.getElementById('hf-token').value.trim();
+      
+      if (!token) return alert("❌ Token required!");
+      if (!prompt) return alert("❌ Script required!");
+
+      const style = document.getElementById('art-style').value;
+      if (type === 'video') prompt = `${prompt}, style: ${style}, format ratio ${activeRatio}`;
+
+      const url = type === 'video' ? API_VID : API_AUD;
+      
+      document.getElementById('btn-video').disabled = true;
+      document.getElementById('btn-audio').disabled = true;
+      document.getElementById('status-container').classList.remove('hidden');
+      document.getElementById('loading-spinner').classList.remove('hidden');
+      
+      // Auto-clear the monitor before new generation starts
+      resetMonitor();
+      startProgressText(type);
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ inputs: prompt })
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+        
+        currentBlob = await res.blob();
+        currentType = type;
+        const objectUrl = URL.createObjectURL(currentBlob);
+        
+        document.getElementById('out-placeholder').classList.add('hidden');
+        document.getElementById('action-btns').classList.remove('hidden');
+        
+        const vidPlayer = document.getElementById('out-video');
+        const audPlayer = document.getElementById('out-audio');
+        
+        if (type === 'video') {
+          vidPlayer.src = objectUrl;
+          vidPlayer.classList.remove('hidden');
+        } else {
+          audPlayer.src = objectUrl;
+          audPlayer.classList.remove('hidden');
+        }
+
+        document.getElementById('btn-download').onclick = () => downloadMedia(currentBlob, `AI_Weave_${type}_${Date.now()}.${type==='video'?'mp4':'wav'}`);
+        
+        clearInterval(progressInterval);
+        document.getElementById('loading-spinner').classList.add('hidden');
+        document.getElementById('status-text').innerText = `✅ Success!`;
+        document.getElementById('status-text').className = "text-sm font-bold text-emerald-400";
+        
+      } catch (err) {
+        clearInterval(progressInterval);
+        document.getElementById('loading-spinner').classList.add('hidden');
+        document.getElementById('status-text').innerText = "❌ Error occurred.";
+        document.getElementById('status-text').className = "text-sm font-bold text-red-400";
+      } finally {
+        document.getElementById('btn-video').disabled = false;
+        document.getElementById('btn-audio').disabled = false;
+      }
+    }
+
+    function downloadMedia(blob, name) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Function to empty the monitor and reset states
+    function resetMonitor() {
+      document.getElementById('out-video').classList.add('hidden');
+      document.getElementById('out-video').src = "";
+      document.getElementById('out-audio').classList.add('hidden');
+      document.getElementById('out-audio').src = "";
+      document.getElementById('out-placeholder').classList.remove('hidden');
+      document.getElementById('action-btns').classList.add('hidden');
+      currentBlob = null;
+    }
+
+    function saveToLibrary() {
+      if (!currentBlob) return;
+      library.push({
+        id: Date.now(), 
+        type: currentType, 
+        blob: currentBlob,
+        title: document.getElementById('main-prompt').value.substring(0, 25) + "..."
+      });
+      renderLibrary();
+      
+      // Clear monitor after saving to prevent conflicts
+      resetMonitor();
+      
+      document.getElementById('status-text').innerText = "💾 Saved to Library & Monitor Cleared!";
+      document.getElementById('status-text').className = "text-sm font-bold text-blue-400";
+    }
+
+    function deleteItem(id) {
+      library = library.filter(item => item.id !== id);
+      renderLibrary();
+    }
+
+    function renderLibrary() {
+      const grid = document.getElementById('library-grid');
+      if (library.length === 0) {
+        grid.innerHTML = '<p class="text-xs text-gray-500 col-span-full text-center mt-4">Library is empty. Generate and save media.</p>';
+        return;
+      }
+      grid.innerHTML = library.map(item => {
+        const url = URL.createObjectURL(item.blob);
+        const isVid = item.type === 'video';
+        return `
+          <div class="bg-gray-900 border border-gray-700 p-2 rounded-xl flex flex-col gap-2 shadow-lg transition hover:border-violet-500">
+            <div class="text-[10px] text-gray-300 truncate bg-black/50 px-1 py-1 rounded font-mono" title="${item.title}">${item.title}</div>
+            ${isVid ? `<video src="${url}" class="w-full h-24 object-cover rounded bg-black border border-gray-800" controls></video>` 
+                    : `<audio src="${url}" class="w-full h-8 mt-2" controls></audio>`}
+            <div class="flex gap-2 mt-auto pt-2">
+              <button onclick="downloadMedia(library.find(x=>x.id===${item.id}).blob, 'Library_${item.id}.${isVid?'mp4':'wav'})" class="flex-1 bg-violet-900 hover:bg-violet-700 text-white text-[10px] font-bold py-1.5 rounded transition">Download</button>
+              <button onclick="deleteItem(${item.id})" class="flex-1 bg-red-900/50 hover:bg-red-800/80 text-white text-[10px] font-bold py-1.5 rounded transition">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function clearLibrary() {
+      if(confirm("Clear entire library?")) {
+        library = [];
+        renderLibrary();
+      }
+    }
+  </script>
+</body>
+</html>
