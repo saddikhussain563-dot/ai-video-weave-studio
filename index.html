@@ -11,7 +11,7 @@
         
         @keyframes smoothPan {
             0% { transform: scale(1.0) translate(0, 0); }
-            100% { transform: scale(1.1) translate(-1%, -1%); }
+            100% { transform: scale(1.15) translate(-2%, -2%); }
         }
         .animate-smooth-pan {
             animation: smoothPan 15s ease-in-out forwards;
@@ -114,11 +114,10 @@
             }
         }
 
-        // ৩টি আলাদা মডেল যুক্ত করা হলো। ব্রাউজার একটি ব্লক করলে এটি অটোমেটিক পরেরটিতে চলে যাবে।
         const cloudModels = [
-            "prompthero/openjourney",
+            "stabilityai/stable-diffusion-xl-base-1.0",
             "runwayml/stable-diffusion-v1-5",
-            "stabilityai/stable-diffusion-xl-base-1.0"
+            "prompthero/openjourney"
         ];
 
         async function generateCloudVideo() {
@@ -140,7 +139,6 @@
             window.speechSynthesis.cancel();
             
             btn.disabled = true;
-            btn.innerHTML = "⏳ Connecting to Cloud...";
             status.classList.remove("hidden", "text-red-400", "text-cyan-400");
             status.classList.add("text-yellow-400");
             imgElement.classList.add('hidden');
@@ -151,14 +149,34 @@
 
             for (let i = 0; i < cloudModels.length; i++) {
                 if (success) break;
-                status.innerText = `Bypassing blocks... Routing to Server ${i+1}/${cloudModels.length}`;
+                
+                btn.innerHTML = `⏳ Connecting (Model ${i+1}/${cloudModels.length})...`;
+                status.innerText = `Sending script to Cloud Server...`;
                 
                 try {
-                    const response = await fetch(`https://api-inference.huggingface.co/models/${cloudModels[i]}`, {
+                    let response = await fetch(`https://api-inference.huggingface.co/models/${cloudModels[i]}`, {
                         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
                         method: "POST",
                         body: JSON.stringify({ inputs: enhancedPrompt }),
                     });
+
+                    // Smart Waiting System for Sleeping Models
+                    if (response.status === 503) {
+                        const data = await response.json();
+                        const waitTime = Math.ceil(data.estimated_time || 20);
+                        status.innerText = `Server is waking up... Please wait ${waitTime} seconds.`;
+                        
+                        // Wait for the exact time requested by the server
+                        await new Promise(resolve => setTimeout(resolve, waitTime * 1000));
+                        
+                        status.innerText = `Retrying generation after wait...`;
+                        // Retry the request
+                        response = await fetch(`https://api-inference.huggingface.co/models/${cloudModels[i]}`, {
+                            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+                            method: "POST",
+                            body: JSON.stringify({ inputs: enhancedPrompt }),
+                        });
+                    }
 
                     if (response.ok) {
                         const blob = await response.blob();
@@ -179,17 +197,19 @@
                             status.classList.replace("text-yellow-400", "text-cyan-400");
                             btn.disabled = false;
                             btn.innerHTML = "🚀 Render New Video";
-                        }, 100);
+                        }, 200);
                         
                         success = true;
+                    } else if (response.status === 401 || response.status === 403) {
+                        throw new Error("Token Error"); // Moves to next model or fails
                     }
                 } catch (error) {
-                    console.log(`Model ${cloudModels[i]} failed. Retrying...`);
+                    console.log(`Model ${cloudModels[i]} failed.`);
                 }
             }
 
             if (!success) {
-                status.innerText = "❌ Security Block or Token Error. Check token or try again.";
+                status.innerText = "❌ Connection failed. Ensure token has 'Write' permissions in Hugging Face.";
                 status.classList.replace("text-yellow-400", "text-red-400");
                 btn.disabled = false;
                 btn.innerHTML = "🔄 Retry Cloud Connection";
@@ -197,5 +217,5 @@
         }
     </script>
 </body>
-                        </html>
-            
+    </html>
+    
