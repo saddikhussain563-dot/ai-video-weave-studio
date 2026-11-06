@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Weave - Ultimate Studio V5</title>
+    <title>AI Video Weave - Instant Play V6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #050505; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
@@ -36,10 +36,10 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-4">
             <div>
                 <h1 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500">AI VIDEO WEAVE</h1>
-                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">V5 Engine • Multi-Model Cloud • Zero-RAM Motion</p>
+                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">V6 Engine • Instant Playback • Zero-Lag</p>
             </div>
             <button onclick="playFullMovie()" id="playMovieBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white px-8 py-3 rounded-lg font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hidden w-full md:w-auto">
-                🎬 PLAY FULL MOVIE
+                🎬 PLAY STITCHED MOVIE
             </button>
         </div>
 
@@ -48,18 +48,17 @@
             <!-- Left: Scene Builder -->
             <div class="lg:col-span-7 space-y-4 glass-panel p-5 rounded-2xl">
                 <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-lg font-bold text-cyan-300">1. Build Your Scene</h2>
-                    <span class="text-[10px] bg-blue-900/40 text-blue-400 px-2 py-1 rounded border border-blue-800">Pro Tools</span>
+                    <h2 class="text-lg font-bold text-cyan-300">1. Instant Generator</h2>
+                    <span class="text-[10px] bg-blue-900/40 text-blue-400 px-2 py-1 rounded border border-blue-800">Auto-Play Enabled</span>
                 </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">AI ENGINE</label>
                         <select id="aiModel" class="w-full p-2.5 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-cyan-100 text-xs focus:border-cyan-500">
+                            <option value="flux">Flux Standard (Fastest)</option>
                             <option value="flux-realism">Flux Realism (Ultra HD)</option>
-                            <option value="flux-3d">Flux 3D (Pixar/Animation)</option>
-                            <option value="flux-anime">Flux Anime (Studio Ghibli)</option>
-                            <option value="flux">Flux Standard (Fast)</option>
+                            <option value="flux-3d">Flux 3D (Animation)</option>
                         </select>
                     </div>
                     <div>
@@ -87,27 +86,26 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
                     <div class="md:col-span-2">
-                        <label class="block text-[10px] font-bold mb-1 text-purple-300 tracking-wider">VOICEOVER DIALOGUE:</label>
+                        <label class="block text-[10px] font-bold mb-1 text-purple-300 tracking-wider">VOICEOVER DIALOGUE (Optional):</label>
                         <textarea id="dialogue" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-purple-500 outline-none h-20 text-sm" placeholder="Type the narration here..."></textarea>
                     </div>
                     <div class="space-y-3 h-full flex flex-col justify-end">
                         <div>
                             <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">VOICE ACTOR</label>
                             <select id="voiceSelect" class="w-full p-2 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-purple-100 text-xs focus:border-purple-500">
-                                <option value="female">Female Voice</option>
                                 <option value="male">Male Voice</option>
+                                <option value="female">Female Voice</option>
                             </select>
                         </div>
                         <button onclick="addSceneToTimeline()" id="addSceneBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 p-2.5 rounded-lg font-bold text-white transition-all h-[42px] text-sm shadow-lg disabled:opacity-50">
-                            ➕ Add Scene
+                            🚀 Generate & Play
                         </button>
                     </div>
                 </div>
-                <p id="statusText" class="text-xs font-bold hidden bg-gray-900/50 p-2 rounded text-center border border-gray-700"></p>
             </div>
 
             <!-- Right: Live Monitor -->
-            <div class="lg:col-span-5 glass-panel p-1 rounded-2xl flex flex-col border-gray-800">
+            <div class="lg:col-span-5 glass-panel p-1 rounded-2xl flex flex-col border-gray-800 relative">
                 <div class="flex justify-between items-center px-4 py-3 bg-gray-900/40 rounded-t-xl border-b border-gray-800">
                     <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Live Monitor
@@ -116,7 +114,14 @@
                 </div>
                 
                 <div id="videoContainer" class="w-full bg-black rounded-b-xl flex items-center justify-center relative overflow-hidden flex-1 ratio-16-9 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)]">
-                    <span id="monitorPlaceholder" class="text-gray-600 font-bold tracking-[0.2em] z-10 text-xs text-center px-4">NO SCENE LOADED</span>
+                    
+                    <!-- NEW: Big Loading Screen -->
+                    <div id="loadingOverlay" class="absolute inset-0 bg-black/80 z-20 flex-col items-center justify-center hidden backdrop-blur-md">
+                        <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+                        <span class="text-cyan-400 text-xs font-bold tracking-widest animate-pulse" id="loadingText">GENERATING SCENE...</span>
+                    </div>
+
+                    <span id="monitorPlaceholder" class="text-gray-600 font-bold tracking-[0.2em] z-10 text-xs text-center px-4">READY FOR GENERATION</span>
                     <img id="renderedVideo" class="absolute inset-0 w-full h-full object-cover hidden" src="">
                 </div>
             </div>
@@ -126,12 +131,12 @@
         <!-- Bottom: Project History -->
         <div class="glass-panel p-4 rounded-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-sm font-bold text-purple-400 tracking-wider">🎞️ MOVIE TIMELINE</h2>
+                <h2 class="text-sm font-bold text-purple-400 tracking-wider">🎞️ HISTORY & TIMELINE</h2>
                 <button onclick="clearTimeline()" class="text-[10px] text-red-400 hover:text-red-300 transition-colors border border-red-900/50 px-3 py-1.5 rounded bg-red-900/20 uppercase tracking-wider font-bold">⚠️ Clear All</button>
             </div>
             
             <div id="timeline" class="flex overflow-x-auto gap-4 pb-3 min-h-[140px] items-center p-2">
-                <div id="emptyTimelineMsg" class="text-gray-500 text-xs italic mx-auto border border-dashed border-gray-700 p-6 rounded-xl bg-gray-900/30">Your timeline is empty. Build scenes above to start.</div>
+                <div id="emptyTimelineMsg" class="text-gray-500 text-xs italic mx-auto border border-dashed border-gray-700 p-6 rounded-xl bg-gray-900/30">History is empty. Generated scenes will be saved here.</div>
             </div>
         </div>
 
@@ -141,10 +146,18 @@
         let movieScenes = [];
         let isPlayingMovie = false;
         
-        // Multi-Model Routing setup
         let voices = [];
         window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
-        voices = window.speechSynthesis.getVoices(); // Immediate load
+        voices = window.speechSynthesis.getVoices(); 
+
+        // Fetch with Timeout Function to prevent 5-minute hangs
+        async function fetchWithTimeout(url, timeout = 12000) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(id);
+            return response;
+        }
 
         async function addSceneToTimeline() {
             const prompt = document.getElementById('imagePrompt').value.trim();
@@ -155,52 +168,56 @@
             const selectedModel = document.getElementById('aiModel').value;
             
             if (!prompt) { 
-                const status = document.getElementById('statusText');
-                status.classList.remove("hidden", "text-yellow-400", "text-green-400");
-                status.classList.add("text-red-400");
-                status.innerText = "⚠️ Please enter an Image Prompt first!";
-                setTimeout(() => status.classList.add("hidden"), 3000);
+                alert("⚠️ Please enter an Image Prompt!");
                 return; 
             }
 
             const btn = document.getElementById('addSceneBtn');
-            const status = document.getElementById('statusText');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
             
             btn.disabled = true;
-            btn.innerHTML = "⏳ Processing...";
-            status.classList.remove("hidden", "text-red-400", "text-green-400");
-            status.classList.add("text-yellow-400");
-            status.innerText = `Routing to high-end node: ${selectedModel.toUpperCase()}...`;
+            btn.innerHTML = "⏳ Generating...";
+            
+            // SHOW BIG LOADING OVERLAY
+            loadingOverlay.classList.replace("hidden", "flex");
+            loadingText.innerText = "CONNECTING TO CLOUD...";
 
-            // Magic formatting for high-quality injection
-            const finalPrompt = encodeURIComponent(prompt + ", masterpiece, ultra realistic, highly detailed, 8k resolution");
-            const backupModels = [selectedModel, 'flux', 'turbo']; // Tries selected first, then falls back
+            const finalPrompt = encodeURIComponent(prompt + ", highly detailed, cinematic");
+            const backupModels = [selectedModel, 'turbo']; 
             
             let success = false;
             let blobUrl = null;
 
             for(let i=0; i < backupModels.length; i++) {
                 if(success) break;
-                if(i > 0) status.innerText = `Retrying with backup node: ${backupModels[i].toUpperCase()}...`;
+                loadingText.innerText = `GENERATING VIA NODE: ${backupModels[i].toUpperCase()}...`;
                 
                 const randomSeed = Math.floor(Math.random() * 999999);
                 const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=${dimensions[0]}&height=${dimensions[1]}&model=${backupModels[i]}&seed=${randomSeed}&nologo=true`;
 
                 try {
-                    const response = await fetch(imageUrl);
+                    // Try fetch with a 12 second limit so it never hangs
+                    const response = await fetchWithTimeout(imageUrl, 12000);
                     if (response.ok) {
                         const blob = await response.blob();
                         blobUrl = URL.createObjectURL(blob);
                         success = true;
                     }
                 } catch (e) {
-                    console.log(`Node ${backupModels[i]} failed.`);
+                    console.log(`Node ${backupModels[i]} timeout or failed.`);
                 }
             }
 
+            // HIDE LOADING OVERLAY
+            loadingOverlay.classList.replace("flex", "hidden");
+            btn.disabled = false;
+            btn.innerHTML = "🚀 Generate & Play";
+
             if (success && blobUrl) {
+                const newSceneId = Date.now();
                 const newScene = {
-                    id: Date.now(),
+                    id: newSceneId,
                     url: blobUrl,
                     promptText: prompt,
                     dialogue: dialogue,
@@ -212,19 +229,13 @@
                 movieScenes.push(newScene);
                 renderTimelineUI();
                 
-                status.innerText = "✅ Scene successfully injected into timeline!";
-                status.classList.replace("text-yellow-400", "text-green-400");
-                setTimeout(() => status.classList.add("hidden"), 3000);
+                // INSTANT PLAYBACK TRIGGER! 
+                // Automatically plays the generated video without clicking the timeline.
+                playSingleScene(newSceneId);
                 
-                document.getElementById('imagePrompt').value = '';
-                document.getElementById('dialogue').value = '';
             } else {
-                status.innerText = "❌ Network heavily congested. Please try again.";
-                status.classList.replace("text-yellow-400", "text-red-400");
+                alert("❌ Servers are currently congested. Please click 'Generate' again.");
             }
-
-            btn.disabled = false;
-            btn.innerHTML = "➕ Add Scene";
         }
 
         function renderTimelineUI() {
@@ -238,7 +249,7 @@
             } else {
                 if(emptyMsg) emptyMsg.style.display = 'block';
                 playBtn.classList.add('hidden');
-                timeline.innerHTML = '<div id="emptyTimelineMsg" class="text-gray-500 text-xs italic mx-auto border border-dashed border-gray-700 p-6 rounded-xl bg-gray-900/30">Your timeline is empty. Build scenes above to start.</div>';
+                timeline.innerHTML = '<div id="emptyTimelineMsg" class="text-gray-500 text-xs italic mx-auto border border-dashed border-gray-700 p-6 rounded-xl bg-gray-900/30">History is empty. Generated scenes will be saved here.</div>';
                 return;
             }
             
@@ -261,7 +272,6 @@
                             <span class="text-3xl drop-shadow-lg">▶️</span>
                         </div>
                     </div>
-                    <p class="text-[10px] text-gray-400 truncate px-1 font-medium" title="${scene.promptText}">${scene.promptText}</p>
                 `;
                 timeline.appendChild(card);
             });
@@ -273,7 +283,7 @@
         }
 
         function clearTimeline() {
-            if(confirm("Delete all scenes from the timeline?")) {
+            if(confirm("Delete all saved videos?")) {
                 movieScenes = [];
                 renderTimelineUI();
                 document.getElementById('renderedVideo').classList.add("hidden");
@@ -339,5 +349,4 @@
                 
                 imgElement.src = scene.url;
                 imgElement.className = 'absolute inset-0 w-full h-full object-cover hidden';
-                imgElement.offsetHeight; 
-                imgElement.className = `absolute inset-0 w-full h-full object-cover ${s
+      
