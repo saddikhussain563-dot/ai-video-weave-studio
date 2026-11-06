@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Weave - Instant Play V6</title>
+    <title>AI Video Weave - Bulletproof V7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #050505; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
         .glass-panel { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
         
-        /* High-End Cinematic Animations */
         @keyframes panRight { 0% { transform: scale(1.05) translateX(-2%); } 100% { transform: scale(1.05) translateX(2%); } }
         @keyframes panLeft { 0% { transform: scale(1.05) translateX(2%); } 100% { transform: scale(1.05) translateX(-2%); } }
         @keyframes zoomIn { 0% { transform: scale(1.0); } 100% { transform: scale(1.15); } }
@@ -32,11 +31,10 @@
 
     <div class="max-w-7xl mx-auto space-y-6">
         
-        <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-4">
             <div>
                 <h1 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500">AI VIDEO WEAVE</h1>
-                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">V6 Engine • Instant Playback • Zero-Lag</p>
+                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">V7 Engine • Direct Load • Anti-Block System</p>
             </div>
             <button onclick="playFullMovie()" id="playMovieBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white px-8 py-3 rounded-lg font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hidden w-full md:w-auto">
                 🎬 PLAY STITCHED MOVIE
@@ -45,11 +43,9 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- Left: Scene Builder -->
             <div class="lg:col-span-7 space-y-4 glass-panel p-5 rounded-2xl">
                 <div class="flex justify-between items-center mb-2">
                     <h2 class="text-lg font-bold text-cyan-300">1. Instant Generator</h2>
-                    <span class="text-[10px] bg-blue-900/40 text-blue-400 px-2 py-1 rounded border border-blue-800">Auto-Play Enabled</span>
                 </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -104,7 +100,6 @@
                 </div>
             </div>
 
-            <!-- Right: Live Monitor -->
             <div class="lg:col-span-5 glass-panel p-1 rounded-2xl flex flex-col border-gray-800 relative">
                 <div class="flex justify-between items-center px-4 py-3 bg-gray-900/40 rounded-t-xl border-b border-gray-800">
                     <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
@@ -115,8 +110,7 @@
                 
                 <div id="videoContainer" class="w-full bg-black rounded-b-xl flex items-center justify-center relative overflow-hidden flex-1 ratio-16-9 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)]">
                     
-                    <!-- NEW: Big Loading Screen -->
-                    <div id="loadingOverlay" class="absolute inset-0 bg-black/80 z-20 flex-col items-center justify-center hidden backdrop-blur-md">
+                    <div id="loadingOverlay" class="absolute inset-0 bg-black/90 z-20 flex-col items-center justify-center hidden backdrop-blur-md">
                         <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-3"></div>
                         <span class="text-cyan-400 text-xs font-bold tracking-widest animate-pulse" id="loadingText">GENERATING SCENE...</span>
                     </div>
@@ -128,7 +122,6 @@
             
         </div>
 
-        <!-- Bottom: Project History -->
         <div class="glass-panel p-4 rounded-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-sm font-bold text-purple-400 tracking-wider">🎞️ HISTORY & TIMELINE</h2>
@@ -150,13 +143,28 @@
         window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
         voices = window.speechSynthesis.getVoices(); 
 
-        // Fetch with Timeout Function to prevent 5-minute hangs
-        async function fetchWithTimeout(url, timeout = 12000) {
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), timeout);
-            const response = await fetch(url, { signal: controller.signal });
-            clearTimeout(id);
-            return response;
+        // New Direct Image Loading System (Bypasses Fetch/CORS/Browser Blocks)
+        function loadDirectImage(url, timeoutMs = 15000) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const timer = setTimeout(() => {
+                    img.src = ""; // Cancel load
+                    reject(new Error("Timeout"));
+                }, timeoutMs);
+
+                img.onload = () => {
+                    clearTimeout(timer);
+                    resolve(url);
+                };
+                
+                img.onerror = () => {
+                    clearTimeout(timer);
+                    reject(new Error("Failed to load"));
+                };
+
+                img.crossOrigin = "Anonymous";
+                img.src = url;
+            });
         }
 
         async function addSceneToTimeline() {
@@ -179,7 +187,6 @@
             btn.disabled = true;
             btn.innerHTML = "⏳ Generating...";
             
-            // SHOW BIG LOADING OVERLAY
             loadingOverlay.classList.replace("hidden", "flex");
             loadingText.innerText = "CONNECTING TO CLOUD...";
 
@@ -187,7 +194,7 @@
             const backupModels = [selectedModel, 'turbo']; 
             
             let success = false;
-            let blobUrl = null;
+            let finalImageUrl = null;
 
             for(let i=0; i < backupModels.length; i++) {
                 if(success) break;
@@ -197,28 +204,23 @@
                 const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=${dimensions[0]}&height=${dimensions[1]}&model=${backupModels[i]}&seed=${randomSeed}&nologo=true`;
 
                 try {
-                    // Try fetch with a 12 second limit so it never hangs
-                    const response = await fetchWithTimeout(imageUrl, 12000);
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        blobUrl = URL.createObjectURL(blob);
-                        success = true;
-                    }
+                    // Try to load the image directly into browser cache
+                    finalImageUrl = await loadDirectImage(imageUrl, 15000);
+                    success = true;
                 } catch (e) {
                     console.log(`Node ${backupModels[i]} timeout or failed.`);
                 }
             }
 
-            // HIDE LOADING OVERLAY
             loadingOverlay.classList.replace("flex", "hidden");
             btn.disabled = false;
             btn.innerHTML = "🚀 Generate & Play";
 
-            if (success && blobUrl) {
+            if (success && finalImageUrl) {
                 const newSceneId = Date.now();
                 const newScene = {
                     id: newSceneId,
-                    url: blobUrl,
+                    url: finalImageUrl,
                     promptText: prompt,
                     dialogue: dialogue,
                     motion: motion,
@@ -228,13 +230,10 @@
                 
                 movieScenes.push(newScene);
                 renderTimelineUI();
-                
-                // INSTANT PLAYBACK TRIGGER! 
-                // Automatically plays the generated video without clicking the timeline.
                 playSingleScene(newSceneId);
                 
             } else {
-                alert("❌ Servers are currently congested. Please click 'Generate' again.");
+                alert("❌ Connection blocked or server busy. Please try again.");
             }
         }
 
@@ -349,4 +348,11 @@
                 
                 imgElement.src = scene.url;
                 imgElement.className = 'absolute inset-0 w-full h-full object-cover hidden';
-      
+                imgElement.offsetHeight; 
+                imgElement.className = `absolute inset-0 w-full h-full object-cover ${scene.motion}`;
+                
+                if(!scene.dialogue) {
+                    setTimeout(resolve, 5000); 
+                } else {
+                    const speech = new SpeechSynthesisUtterance(scene.dialogue);
+                    cons
