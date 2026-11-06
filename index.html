@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Weave Studio - Cloud Edition</title>
+    <title>AI Video Weave Studio - Pro Cloud</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0f111a; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
         
-        @keyframes smoothPan {
-            0% { transform: scale(1.0) translate(0, 0); }
-            100% { transform: scale(1.15) translate(-2%, -2%); }
+        /* Hardware Accelerated Cinematic Animation */
+        @keyframes cinematicPan {
+            0% { transform: scale(1.0) translate(0, 0); filter: brightness(0.8); }
+            20% { filter: brightness(1.1); }
+            100% { transform: scale(1.15) translate(-2%, -2%); filter: brightness(1.0); }
         }
-        .animate-smooth-pan {
-            animation: smoothPan 15s ease-in-out forwards;
-            will-change: transform; 
+        .animate-cinematic-pan {
+            animation: cinematicPan 15s ease-in-out forwards;
+            will-change: transform, filter; 
         }
         
         .ratio-16-9 { aspect-ratio: 16 / 9; width: 100%; }
@@ -27,63 +29,58 @@
 
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5">
         
+        <!-- Left Column: Command Center -->
         <div class="space-y-5">
             <div class="text-left space-y-1">
                 <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">AI VIDEO WEAVE</h1>
-                <p class="text-xs text-gray-400 uppercase tracking-widest">Ultra-Light Cloud Engine • Zero Device Load</p>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Tokenless Cloud Engine • Instant Render</p>
             </div>
             
-            <div class="glass-panel p-4 rounded-xl space-y-3">
-                <div>
-                    <label class="block text-xs font-bold mb-1 text-cyan-300">CLOUD API ACCESS (Hugging Face Token):</label>
-                    <input type="password" id="apiToken" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 focus:border-cyan-500 outline-none text-sm" placeholder="Paste your hf_... token here">
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="saveToken()" class="flex-1 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-3 py-2 rounded-lg font-semibold transition-colors">💾 Save Securely</button>
-                    <button onclick="clearWorkspace()" class="flex-1 bg-gray-800 hover:bg-gray-700 border border-red-900/50 text-red-400 px-3 py-2 rounded-lg font-semibold transition-colors">🗑️ Reset App</button>
-                </div>
-            </div>
-
-            <div class="glass-panel p-4 rounded-xl grid grid-cols-2 gap-3">
+            <div class="glass-panel p-4 rounded-xl grid grid-cols-2 gap-3 mt-4">
                 <div>
                     <label class="block text-xs font-bold mb-1 text-gray-400">VIDEO FORMAT</label>
-                    <select id="frameSize" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 text-sm outline-none">
-                        <option value="ratio-16-9">YouTube / Web (16:9)</option>
-                        <option value="ratio-9-16">Reels / Shorts (9:16)</option>
-                        <option value="ratio-1-1">Instagram Square (1:1)</option>
+                    <select id="frameSize" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 text-sm outline-none text-cyan-100">
+                        <option value="1920x1080">YouTube / Web (16:9)</option>
+                        <option value="1080x1920">Reels / Shorts (9:16)</option>
+                        <option value="1080x1080">Instagram Square (1:1)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-bold mb-1 text-gray-400">ART DIRECTION</label>
-                    <select id="artStyle" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 text-sm outline-none">
-                        <option value="cinematic realism, high budget Hollywood movie, highly detailed, 8k">Cinematic Realism</option>
-                        <option value="Scientific accurate visualization, high detail, educational, 3D render">Scientific/Educational</option>
-                        <option value="Disney Pixar 3D animation style, highly detailed, vibrant lighting">3D Animation</option>
-                        <option value="Futuristic sci-fi, unreal engine 5 render, cinematic lighting">Sci-Fi / Cyberpunk</option>
+                    <select id="artStyle" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 text-sm outline-none text-cyan-100">
+                        <option value="cinematic movie scene, unreal engine 5, masterpiece, 8k resolution, highly detailed">Cinematic Realism</option>
+                        <option value="Scientific microscopic 3D render, highly detailed, educational visualization, macro photography">Scientific / Macro</option>
+                        <option value="cute Disney Pixar 3D animation style, vibrant lighting, highly detailed">3D Animation</option>
+                        <option value="Futuristic sci-fi cyberpunk, neon lights, highly detailed concept art">Sci-Fi / Cyberpunk</option>
                     </select>
                 </div>
             </div>
 
             <div class="glass-panel p-4 rounded-xl">
-                <label class="block text-xs font-bold mb-1 text-cyan-300">DIRECTOR's SCRIPT (Prompt):</label>
-                <textarea id="prompt" class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-cyan-500 outline-none h-24 text-sm" placeholder="Example: A realistic glowing human brain with neural networks firing..."></textarea>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-xs font-bold text-cyan-300">DIRECTOR's SCRIPT (Prompt):</label>
+                    <button onclick="clearWorkspace()" class="text-xs text-red-400 hover:text-red-300 font-bold px-2 py-1 rounded bg-red-900/30">🗑️ Clear</button>
+                </div>
                 
-                <button onclick="generateCloudVideo()" id="generateBtn" class="mt-3 w-full bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 p-3.5 rounded-lg font-bold text-white transition-all shadow-lg flex justify-center items-center gap-2">
-                    🚀 Render via Cloud Server
+                <textarea id="prompt" class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-cyan-500 outline-none h-28 text-sm" placeholder="Type your scene here... (e.g., A glowing human brain with digital neural networks firing)"></textarea>
+                
+                <button onclick="generateTokenlessVideo()" id="generateBtn" class="mt-4 w-full bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 p-4 rounded-lg font-bold text-white transition-all shadow-lg flex justify-center items-center gap-2 text-lg">
+                    🚀 Render Video Instantly
                 </button>
-                <p id="statusText" class="text-xs mt-2 text-center hidden font-medium tracking-wide"></p>
+                <p id="statusText" class="text-sm mt-3 text-center hidden font-bold tracking-wide"></p>
             </div>
         </div>
 
-        <div class="glass-panel p-4 rounded-xl flex flex-col h-full min-h-[350px]">
+        <!-- Right Column: Output Monitor -->
+        <div class="glass-panel p-4 rounded-xl flex flex-col h-full min-h-[400px]">
             <div class="flex justify-between items-center mb-2">
                 <h2 class="text-lg font-bold text-cyan-300">🖥️ Output Monitor</h2>
-                <span class="text-[10px] bg-cyan-900/40 text-cyan-400 px-2 py-1 rounded border border-cyan-800/50 uppercase tracking-widest">Low-RAM Mode</span>
+                <span class="text-[10px] bg-green-900/40 text-green-400 px-2 py-1 rounded border border-green-800/50 uppercase tracking-widest">Auto-Scale Mode</span>
             </div>
             
-            <div id="videoContainer" class="w-full bg-black rounded-lg flex items-center justify-center border border-gray-800 relative overflow-hidden flex-1 shadow-inner">
-                <span class="text-gray-700 font-bold tracking-widest z-10 text-sm">WAITING FOR CLOUD...</span>
-                <img id="renderedVideo" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="Cloud Rendered Output">
+            <div id="videoContainer" class="w-full bg-black rounded-lg flex items-center justify-center border border-gray-800 relative overflow-hidden flex-1 shadow-inner ratio-16-9">
+                <span class="text-gray-700 font-bold tracking-widest z-10 text-sm">SYSTEM READY</span>
+                <img id="renderedVideo" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="Generated Frame">
             </div>
         </div>
         
@@ -92,19 +89,20 @@
     <script>
         let currentObjectUrl = null; 
 
-        window.onload = () => {
-            if(localStorage.getItem('hf_token')) document.getElementById('apiToken').value = localStorage.getItem('hf_token');
-        };
-
-        function saveToken() {
-            const token = document.getElementById('apiToken').value.trim();
-            if(token) { localStorage.setItem('hf_token', token); alert("Token saved securely."); }
-        }
+        // Update container size dynamically based on selection
+        document.getElementById('frameSize').addEventListener('change', function() {
+            const size = this.value;
+            const container = document.getElementById('videoContainer');
+            container.className = `w-full bg-black rounded-lg flex items-center justify-center border border-gray-800 relative overflow-hidden flex-1 shadow-inner`;
+            if(size === "1920x1080") container.classList.add("ratio-16-9");
+            if(size === "1080x1920") container.classList.add("ratio-9-16");
+            if(size === "1080x1080") container.classList.add("ratio-1-1");
+        });
 
         function clearWorkspace() {
             document.getElementById('prompt').value = '';
             document.getElementById('renderedVideo').classList.add('hidden');
-            document.getElementById('renderedVideo').classList.remove('animate-smooth-pan');
+            document.getElementById('renderedVideo').classList.remove('animate-cinematic-pan');
             document.getElementById('statusText').classList.add("hidden");
             window.speechSynthesis.cancel();
             
@@ -114,105 +112,70 @@
             }
         }
 
-        const cloudModels = [
-            "stabilityai/stable-diffusion-xl-base-1.0",
-            "runwayml/stable-diffusion-v1-5",
-            "prompthero/openjourney"
-        ];
-
-        async function generateCloudVideo() {
-            const token = document.getElementById('apiToken').value.trim();
+        async function generateTokenlessVideo() {
             const rawPrompt = document.getElementById('prompt').value.trim();
             const style = document.getElementById('artStyle').value;
-            const frameSizeClass = document.getElementById('frameSize').value;
+            const dimensions = document.getElementById('frameSize').value.split('x');
+            const width = dimensions[0];
+            const height = dimensions[1];
             
             const btn = document.getElementById('generateBtn');
             const status = document.getElementById('statusText');
-            const videoContainer = document.getElementById('videoContainer');
             const imgElement = document.getElementById('renderedVideo');
 
-            if (!token || !rawPrompt) { alert("Token and Script are required!"); return; }
+            if (!rawPrompt) { alert("Please enter a Director's Script!"); return; }
 
-            videoContainer.className = `bg-black rounded-lg flex items-center justify-center border border-gray-800 relative overflow-hidden flex-1 shadow-inner ${frameSizeClass}`;
-            
+            // Clear old memory
             if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
             window.speechSynthesis.cancel();
             
+            // UI State
             btn.disabled = true;
+            btn.innerHTML = "⏳ Generating Fast Cloud Render...";
             status.classList.remove("hidden", "text-red-400", "text-cyan-400");
             status.classList.add("text-yellow-400");
+            status.innerText = "Connecting to global rendering network... (No tokens needed)";
             imgElement.classList.add('hidden');
-            imgElement.classList.remove('animate-smooth-pan');
+            imgElement.classList.remove('animate-cinematic-pan');
 
-            const enhancedPrompt = `${rawPrompt}, ${style}`;
-            let success = false;
+            // Build magical tokenless URL
+            const finalPrompt = encodeURIComponent(`${rawPrompt}, ${style}`);
+            // Adding a random seed makes sure we don't get cached images
+            const randomSeed = Math.floor(Math.random() * 100000);
+            const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=${width}&height=${height}&seed=${randomSeed}&nologo=true`;
 
-            for (let i = 0; i < cloudModels.length; i++) {
-                if (success) break;
+            try {
+                // Fetch the image as a blob for zero-RAM management
+                const response = await fetch(imageUrl);
+                if (!response.ok) throw new Error("Render failed");
                 
-                btn.innerHTML = `⏳ Connecting (Model ${i+1}/${cloudModels.length})...`;
-                status.innerText = `Sending script to Cloud Server...`;
+                const blob = await response.blob();
+                currentObjectUrl = URL.createObjectURL(blob);
                 
-                try {
-                    let response = await fetch(`https://api-inference.huggingface.co/models/${cloudModels[i]}`, {
-                        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-                        method: "POST",
-                        body: JSON.stringify({ inputs: enhancedPrompt }),
-                    });
+                status.innerText = "Applying Cinematic Motion & Voiceover...";
+                imgElement.src = currentObjectUrl;
+                imgElement.classList.remove('hidden');
+                
+                // Start animation and audio
+                setTimeout(() => {
+                    imgElement.classList.add('animate-cinematic-pan');
+                    
+                    const speech = new SpeechSynthesisUtterance(rawPrompt);
+                    speech.lang = 'en-US';
+                    speech.rate = 0.95; // slightly cinematic speed
+                    window.speechSynthesis.speak(speech);
 
-                    // Smart Waiting System for Sleeping Models
-                    if (response.status === 503) {
-                        const data = await response.json();
-                        const waitTime = Math.ceil(data.estimated_time || 20);
-                        status.innerText = `Server is waking up... Please wait ${waitTime} seconds.`;
-                        
-                        // Wait for the exact time requested by the server
-                        await new Promise(resolve => setTimeout(resolve, waitTime * 1000));
-                        
-                        status.innerText = `Retrying generation after wait...`;
-                        // Retry the request
-                        response = await fetch(`https://api-inference.huggingface.co/models/${cloudModels[i]}`, {
-                            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-                            method: "POST",
-                            body: JSON.stringify({ inputs: enhancedPrompt }),
-                        });
-                    }
+                    status.innerText = "✅ Cinematic Render Complete!";
+                    status.classList.replace("text-yellow-400", "text-cyan-400");
+                    btn.disabled = false;
+                    btn.innerHTML = "🚀 Render New Video";
+                }, 300);
 
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        currentObjectUrl = URL.createObjectURL(blob);
-                        
-                        status.innerText = "Applying Cinematic Motion & Audio...";
-                        imgElement.src = currentObjectUrl;
-                        imgElement.classList.remove('hidden');
-                        
-                        setTimeout(() => {
-                            imgElement.classList.add('animate-smooth-pan');
-                            const speech = new SpeechSynthesisUtterance(rawPrompt);
-                            speech.lang = 'en-US';
-                            speech.rate = 0.95;
-                            window.speechSynthesis.speak(speech);
-
-                            status.innerText = "✅ Cloud Render Complete!";
-                            status.classList.replace("text-yellow-400", "text-cyan-400");
-                            btn.disabled = false;
-                            btn.innerHTML = "🚀 Render New Video";
-                        }, 200);
-                        
-                        success = true;
-                    } else if (response.status === 401 || response.status === 403) {
-                        throw new Error("Token Error"); // Moves to next model or fails
-                    }
-                } catch (error) {
-                    console.log(`Model ${cloudModels[i]} failed.`);
-                }
-            }
-
-            if (!success) {
-                status.innerText = "❌ Connection failed. Ensure token has 'Write' permissions in Hugging Face.";
+            } catch (error) {
+                status.innerText = "❌ Something went wrong. Please try again.";
                 status.classList.replace("text-yellow-400", "text-red-400");
                 btn.disabled = false;
-                btn.innerHTML = "🔄 Retry Cloud Connection";
+                btn.innerHTML = "🔄 Retry Render";
             }
         }
     </script>
