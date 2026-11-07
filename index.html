@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Weave - Bulletproof V7</title>
+    <title>AI Video Weave - Fast Hybrid</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #050505; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
@@ -34,29 +34,22 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-4">
             <div>
                 <h1 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500">AI VIDEO WEAVE</h1>
-                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">V7 Engine • Direct Load • Anti-Block System</p>
+                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">Hybrid Engine • V2 Core & V7 Design</p>
             </div>
             <button onclick="playFullMovie()" id="playMovieBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white px-8 py-3 rounded-lg font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hidden w-full md:w-auto">
-                🎬 PLAY STITCHED MOVIE
+                🎬 PLAY ALL SCENES
             </button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
+            <!-- Left: Scene Builder -->
             <div class="lg:col-span-7 space-y-4 glass-panel p-5 rounded-2xl">
                 <div class="flex justify-between items-center mb-2">
                     <h2 class="text-lg font-bold text-cyan-300">1. Instant Generator</h2>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">AI ENGINE</label>
-                        <select id="aiModel" class="w-full p-2.5 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-cyan-100 text-xs focus:border-cyan-500">
-                            <option value="flux">Flux Standard (Fastest)</option>
-                            <option value="flux-realism">Flux Realism (Ultra HD)</option>
-                            <option value="flux-3d">Flux 3D (Animation)</option>
-                        </select>
-                    </div>
+                <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">FORMAT</label>
                         <select id="frameSize" class="w-full p-2.5 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-cyan-100 text-xs focus:border-cyan-500">
@@ -64,7 +57,7 @@
                             <option value="1080x1920">Shorts (9:16)</option>
                         </select>
                     </div>
-                    <div class="col-span-2 md:col-span-1">
+                    <div>
                         <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">CAMERA MOTION</label>
                         <select id="cameraMotion" class="w-full p-2.5 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-cyan-100 text-xs focus:border-cyan-500">
                             <option value="anim-zoom-in">Cinematic Zoom In</option>
@@ -77,13 +70,13 @@
 
                 <div>
                     <label class="block text-[10px] font-bold mb-1 text-cyan-300 tracking-wider">IMAGE PROMPT (Visuals only):</label>
-                    <textarea id="imagePrompt" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-cyan-500 outline-none h-20 text-sm" placeholder="E.g., A highly detailed futuristic city, flying cars, glowing neon, 8k..."></textarea>
+                    <textarea id="imagePrompt" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-cyan-500 outline-none h-20 text-sm" placeholder="E.g., A glowing futuristic city at night..."></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
                     <div class="md:col-span-2">
-                        <label class="block text-[10px] font-bold mb-1 text-purple-300 tracking-wider">VOICEOVER DIALOGUE (Optional):</label>
-                        <textarea id="dialogue" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-purple-500 outline-none h-20 text-sm" placeholder="Type the narration here..."></textarea>
+                        <label class="block text-[10px] font-bold mb-1 text-purple-300 tracking-wider">VOICEOVER DIALOGUE:</label>
+                        <textarea id="dialogue" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-purple-500 outline-none h-20 text-sm" placeholder="Type what the AI should say..."></textarea>
                     </div>
                     <div class="space-y-3 h-full flex flex-col justify-end">
                         <div>
@@ -94,12 +87,13 @@
                             </select>
                         </div>
                         <button onclick="addSceneToTimeline()" id="addSceneBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 p-2.5 rounded-lg font-bold text-white transition-all h-[42px] text-sm shadow-lg disabled:opacity-50">
-                            🚀 Generate & Play
+                            🚀 Generate Video
                         </button>
                     </div>
                 </div>
             </div>
 
+            <!-- Right: Live Monitor -->
             <div class="lg:col-span-5 glass-panel p-1 rounded-2xl flex flex-col border-gray-800 relative">
                 <div class="flex justify-between items-center px-4 py-3 bg-gray-900/40 rounded-t-xl border-b border-gray-800">
                     <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
@@ -112,7 +106,7 @@
                     
                     <div id="loadingOverlay" class="absolute inset-0 bg-black/90 z-20 flex-col items-center justify-center hidden backdrop-blur-md">
                         <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-                        <span class="text-cyan-400 text-xs font-bold tracking-widest animate-pulse" id="loadingText">GENERATING SCENE...</span>
+                        <span class="text-cyan-400 text-xs font-bold tracking-widest animate-pulse" id="loadingText">GENERATING FAST RENDER...</span>
                     </div>
 
                     <span id="monitorPlaceholder" class="text-gray-600 font-bold tracking-[0.2em] z-10 text-xs text-center px-4">READY FOR GENERATION</span>
@@ -122,6 +116,7 @@
             
         </div>
 
+        <!-- Bottom: Project History -->
         <div class="glass-panel p-4 rounded-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-sm font-bold text-purple-400 tracking-wider">🎞️ HISTORY & TIMELINE</h2>
@@ -143,37 +138,12 @@
         window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
         voices = window.speechSynthesis.getVoices(); 
 
-        // New Direct Image Loading System (Bypasses Fetch/CORS/Browser Blocks)
-        function loadDirectImage(url, timeoutMs = 15000) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                const timer = setTimeout(() => {
-                    img.src = ""; // Cancel load
-                    reject(new Error("Timeout"));
-                }, timeoutMs);
-
-                img.onload = () => {
-                    clearTimeout(timer);
-                    resolve(url);
-                };
-                
-                img.onerror = () => {
-                    clearTimeout(timer);
-                    reject(new Error("Failed to load"));
-                };
-
-                img.crossOrigin = "Anonymous";
-                img.src = url;
-            });
-        }
-
         async function addSceneToTimeline() {
             const prompt = document.getElementById('imagePrompt').value.trim();
             const dialogue = document.getElementById('dialogue').value.trim();
             const dimensions = document.getElementById('frameSize').value.split('x');
             const motion = document.getElementById('cameraMotion').value;
             const voiceType = document.getElementById('voiceSelect').value;
-            const selectedModel = document.getElementById('aiModel').value;
             
             if (!prompt) { 
                 alert("⚠️ Please enter an Image Prompt!");
@@ -182,45 +152,27 @@
 
             const btn = document.getElementById('addSceneBtn');
             const loadingOverlay = document.getElementById('loadingOverlay');
-            const loadingText = document.getElementById('loadingText');
             
             btn.disabled = true;
-            btn.innerHTML = "⏳ Generating...";
-            
+            btn.innerHTML = "⏳ Wait...";
             loadingOverlay.classList.replace("hidden", "flex");
-            loadingText.innerText = "CONNECTING TO CLOUD...";
 
-            const finalPrompt = encodeURIComponent(prompt + ", highly detailed, cinematic");
-            const backupModels = [selectedModel, 'turbo']; 
-            
-            let success = false;
-            let finalImageUrl = null;
+            // THE V2 WORKING ENGINE (Simple & Fast)
+            const finalPrompt = encodeURIComponent(prompt + ", masterpiece, highly detailed");
+            const randomSeed = Math.floor(Math.random() * 100000);
+            const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=${dimensions[0]}&height=${dimensions[1]}&seed=${randomSeed}&nologo=true`;
 
-            for(let i=0; i < backupModels.length; i++) {
-                if(success) break;
-                loadingText.innerText = `GENERATING VIA NODE: ${backupModels[i].toUpperCase()}...`;
+            try {
+                const response = await fetch(imageUrl);
+                if (!response.ok) throw new Error("Render failed");
                 
-                const randomSeed = Math.floor(Math.random() * 999999);
-                const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=${dimensions[0]}&height=${dimensions[1]}&model=${backupModels[i]}&seed=${randomSeed}&nologo=true`;
-
-                try {
-                    // Try to load the image directly into browser cache
-                    finalImageUrl = await loadDirectImage(imageUrl, 15000);
-                    success = true;
-                } catch (e) {
-                    console.log(`Node ${backupModels[i]} timeout or failed.`);
-                }
-            }
-
-            loadingOverlay.classList.replace("flex", "hidden");
-            btn.disabled = false;
-            btn.innerHTML = "🚀 Generate & Play";
-
-            if (success && finalImageUrl) {
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
                 const newSceneId = Date.now();
                 const newScene = {
                     id: newSceneId,
-                    url: finalImageUrl,
+                    url: blobUrl,
                     promptText: prompt,
                     dialogue: dialogue,
                     motion: motion,
@@ -230,10 +182,20 @@
                 
                 movieScenes.push(newScene);
                 renderTimelineUI();
-                playSingleScene(newSceneId);
                 
-            } else {
-                alert("❌ Connection blocked or server busy. Please try again.");
+                // Hide Loading & Reset Button
+                loadingOverlay.classList.replace("flex", "hidden");
+                btn.disabled = false;
+                btn.innerHTML = "🚀 Generate Video";
+
+                // Instant Auto-Play
+                playSingleScene(newSceneId);
+
+            } catch (error) {
+                loadingOverlay.classList.replace("flex", "hidden");
+                btn.disabled = false;
+                btn.innerHTML = "🚀 Generate Video";
+                alert("❌ Servers are busy. Please click Generate again.");
             }
         }
 
@@ -300,7 +262,7 @@
             window.speechSynthesis.cancel();
             
             const badge = document.getElementById('monitorBadge');
-            badge.innerText = `PLAYING PREVIEW`;
+            badge.innerText = `PLAYING NOW`;
             badge.className = "text-[10px] bg-blue-900 text-blue-400 px-2 py-0.5 rounded border border-blue-700 uppercase tracking-wider";
             
             await setupAndPlayScene(scene);
@@ -355,4 +317,20 @@
                     setTimeout(resolve, 5000); 
                 } else {
                     const speech = new SpeechSynthesisUtterance(scene.dialogue);
-                    cons
+                    const isFemale = scene.voiceType === 'female';
+                    let selectedVoice = voices.find(v => v.lang.includes('en-US') && (isFemale ? (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira')) : (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david'))));
+                    
+                    if(selectedVoice) speech.voice = selectedVoice;
+                    speech.rate = 0.92; 
+                    
+                    speech.onend = resolve;
+                    speech.onerror = resolve; 
+                    
+                    window.speechSynthesis.speak(speech);
+                }
+            });
+        }
+    </script>
+</body>
+    </html>
+    
