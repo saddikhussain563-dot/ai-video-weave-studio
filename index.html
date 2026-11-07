@@ -3,334 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Weave - Fast Hybrid</title>
+    <title>AI Video Weave - Master Studio V8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #050505; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
-        .glass-panel { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        body { background-color: #030712; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
+        .glass-panel { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
         
+        /* Advanced Cinematic Motions */
         @keyframes panRight { 0% { transform: scale(1.05) translateX(-2%); } 100% { transform: scale(1.05) translateX(2%); } }
-        @keyframes panLeft { 0% { transform: scale(1.05) translateX(2%); } 100% { transform: scale(1.05) translateX(-2%); } }
         @keyframes zoomIn { 0% { transform: scale(1.0); } 100% { transform: scale(1.15); } }
-        @keyframes zoomOut { 0% { transform: scale(1.15); } 100% { transform: scale(1.0); } }
-        
         .anim-pan-right { animation: panRight 12s ease-in-out forwards; }
-        .anim-pan-left { animation: panLeft 12s ease-in-out forwards; }
         .anim-zoom-in { animation: zoomIn 12s ease-in-out forwards; }
-        .anim-zoom-out { animation: zoomOut 12s ease-in-out forwards; }
         
         .ratio-16-9 { aspect-ratio: 16 / 9; width: 100%; }
-        .ratio-9-16 { aspect-ratio: 9 / 16; width: 56.25%; margin: 0 auto; }
-
-        ::-webkit-scrollbar { height: 6px; width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+        
+        /* CapCut Style Timeline Scrollbar */
+        ::-webkit-scrollbar { height: 8px; width: 8px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 4px; }
     </style>
 </head>
 <body class="p-3 md:p-6 text-sm">
 
     <div class="max-w-7xl mx-auto space-y-6">
         
+        <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-4">
             <div>
-                <h1 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500">AI VIDEO WEAVE</h1>
-                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">Hybrid Engine • V2 Core & V7 Design</p>
+                <h1 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500">AI VIDEO WEAVE</h1>
+                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">V8 Master Engine • CapCut Style Timeline</p>
             </div>
-            <button onclick="playFullMovie()" id="playMovieBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white px-8 py-3 rounded-lg font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all hidden w-full md:w-auto">
-                🎬 PLAY ALL SCENES
+            <button onclick="playMasterTimeline()" id="playMovieBtn" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-lg font-bold shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all hidden w-full md:w-auto">
+                🎬 PLAY MASTER VIDEO
             </button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- Left: Scene Builder -->
-            <div class="lg:col-span-7 space-y-4 glass-panel p-5 rounded-2xl">
-                <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-lg font-bold text-cyan-300">1. Instant Generator</h2>
+            <!-- Left: Master Controller Form -->
+            <div class="lg:col-span-6 space-y-4 glass-panel p-5 rounded-2xl">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-800 pb-2">
+                    <h2 class="text-lg font-bold text-indigo-300">🧠 Master AI Controller</h2>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">FORMAT</label>
-                        <select id="frameSize" class="w-full p-2.5 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-cyan-100 text-xs focus:border-cyan-500">
-                            <option value="1920x1080">YouTube (16:9)</option>
-                            <option value="1080x1920">Shorts (9:16)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">CAMERA MOTION</label>
-                        <select id="cameraMotion" class="w-full p-2.5 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-cyan-100 text-xs focus:border-cyan-500">
-                            <option value="anim-zoom-in">Cinematic Zoom In</option>
-                            <option value="anim-zoom-out">Cinematic Zoom Out</option>
-                            <option value="anim-pan-right">Slow Pan Right</option>
-                            <option value="anim-pan-left">Slow Pan Left</option>
-                        </select>
-                    </div>
+                <div>
+                    <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">VISUAL PROMPT (Image Generation):</label>
+                    <textarea id="imagePrompt" class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-indigo-500 outline-none h-20 text-sm" placeholder="Describe the scene... (e.g., A cinematic glowing forest)"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold mb-1 text-cyan-300 tracking-wider">IMAGE PROMPT (Visuals only):</label>
-                    <textarea id="imagePrompt" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-cyan-500 outline-none h-20 text-sm" placeholder="E.g., A glowing futuristic city at night..."></textarea>
+                    <label class="block text-[10px] font-bold mb-1 text-pink-300 tracking-wider">AUDIO SCRIPT (NotebookLM Style Podcast/Narration):</label>
+                    <textarea id="dialogue" class="w-full p-3 bg-gray-900 rounded-lg border border-gray-700 focus:border-pink-500 outline-none h-20 text-sm" placeholder="Type the narration or dialogue here..."></textarea>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
-                    <div class="md:col-span-2">
-                        <label class="block text-[10px] font-bold mb-1 text-purple-300 tracking-wider">VOICEOVER DIALOGUE:</label>
-                        <textarea id="dialogue" class="w-full p-3 bg-gray-900/80 rounded-lg border border-gray-700 focus:border-purple-500 outline-none h-20 text-sm" placeholder="Type what the AI should say..."></textarea>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">VOICE ENGINE</label>
+                        <select id="voiceSelect" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 outline-none text-gray-200 text-xs">
+                            <option value="male">Host 1 (Male)</option>
+                            <option value="female">Host 2 (Female)</option>
+                        </select>
                     </div>
-                    <div class="space-y-3 h-full flex flex-col justify-end">
-                        <div>
-                            <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">VOICE ACTOR</label>
-                            <select id="voiceSelect" class="w-full p-2 bg-gray-900/80 rounded-lg border border-gray-700 outline-none text-purple-100 text-xs focus:border-purple-500">
-                                <option value="male">Male Voice</option>
-                                <option value="female">Female Voice</option>
-                            </select>
-                        </div>
-                        <button onclick="addSceneToTimeline()" id="addSceneBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 p-2.5 rounded-lg font-bold text-white transition-all h-[42px] text-sm shadow-lg disabled:opacity-50">
-                            🚀 Generate Video
-                        </button>
+                    <div>
+                        <label class="block text-[10px] font-bold mb-1 text-gray-400 tracking-wider">MOTION AI</label>
+                        <select id="cameraMotion" class="w-full p-2.5 bg-gray-900 rounded-lg border border-gray-700 outline-none text-gray-200 text-xs">
+                            <option value="anim-zoom-in">Cinematic Zoom</option>
+                            <option value="anim-pan-right">Smooth Pan</option>
+                        </select>
                     </div>
                 </div>
+
+                <button onclick="orchestrateScene()" id="orchestrateBtn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 p-3 rounded-lg font-bold text-white transition-all shadow-lg mt-2">
+                    ⚡ Generate & Sync to Timeline
+                </button>
             </div>
 
-            <!-- Right: Live Monitor -->
-            <div class="lg:col-span-5 glass-panel p-1 rounded-2xl flex flex-col border-gray-800 relative">
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-900/40 rounded-t-xl border-b border-gray-800">
-                    <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Live Monitor
+            <!-- Right: Studio Monitor -->
+            <div class="lg:col-span-6 glass-panel p-2 rounded-2xl flex flex-col border-gray-800">
+                <div class="flex justify-between items-center px-4 py-2 bg-gray-900/50 rounded-t-xl">
+                    <h2 class="text-xs font-bold text-gray-300 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Studio Monitor
                     </h2>
-                    <span id="monitorBadge" class="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700 uppercase tracking-wider">Standby</span>
                 </div>
                 
-                <div id="videoContainer" class="w-full bg-black rounded-b-xl flex items-center justify-center relative overflow-hidden flex-1 ratio-16-9 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)]">
-                    
-                    <div id="loadingOverlay" class="absolute inset-0 bg-black/90 z-20 flex-col items-center justify-center hidden backdrop-blur-md">
-                        <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-                        <span class="text-cyan-400 text-xs font-bold tracking-widest animate-pulse" id="loadingText">GENERATING FAST RENDER...</span>
+                <div id="videoContainer" class="w-full bg-black rounded-b-xl flex items-center justify-center relative overflow-hidden flex-1 ratio-16-9">
+                    <div id="loadingOverlay" class="absolute inset-0 bg-black/90 z-20 flex-col items-center justify-center hidden">
+                        <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <span class="text-indigo-400 text-[10px] font-bold tracking-widest animate-pulse" id="loadingText">MASTER AI PROCESSING...</span>
                     </div>
-
-                    <span id="monitorPlaceholder" class="text-gray-600 font-bold tracking-[0.2em] z-10 text-xs text-center px-4">READY FOR GENERATION</span>
+                    <span id="monitorPlaceholder" class="text-gray-700 font-bold tracking-[0.2em] z-10 text-xs">NO MEDIA</span>
                     <img id="renderedVideo" class="absolute inset-0 w-full h-full object-cover hidden" src="">
                 </div>
             </div>
             
         </div>
 
-        <!-- Bottom: Project History -->
-        <div class="glass-panel p-4 rounded-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-sm font-bold text-purple-400 tracking-wider">🎞️ HISTORY & TIMELINE</h2>
-                <button onclick="clearTimeline()" class="text-[10px] text-red-400 hover:text-red-300 transition-colors border border-red-900/50 px-3 py-1.5 rounded bg-red-900/20 uppercase tracking-wider font-bold">⚠️ Clear All</button>
+        <!-- Bottom: CapCut Style Multi-Track Timeline -->
+        <div class="glass-panel p-4 rounded-2xl overflow-hidden">
+            <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
+                <h2 class="text-sm font-bold text-gray-200">🎬 Master Timeline (CapCut Layout)</h2>
+                <button onclick="clearTimeline()" class="text-[10px] text-red-400 border border-red-900/50 px-2 py-1 rounded bg-red-900/20">Clear Workspace</button>
             </div>
             
-            <div id="timeline" class="flex overflow-x-auto gap-4 pb-3 min-h-[140px] items-center p-2">
-                <div id="emptyTimelineMsg" class="text-gray-500 text-xs italic mx-auto border border-dashed border-gray-700 p-6 rounded-xl bg-gray-900/30">History is empty. Generated scenes will be saved here.</div>
+            <div class="flex flex-col gap-2 overflow-x-auto pb-4" id="timelineContainer">
+                
+                <!-- Video Track -->
+                <div class="flex items-center gap-2">
+                    <div class="w-16 flex-shrink-0 text-[10px] text-indigo-400 font-bold text-right pr-2 border-r border-gray-700">VIDEO</div>
+                    <div id="videoTrack" class="flex gap-1 min-w-max items-center h-16 bg-gray-900/50 p-1 rounded-lg border border-gray-800 flex-1">
+                        <span class="text-gray-600 text-xs italic px-4" id="emptyVideoMsg">Video clips will appear here...</span>
+                    </div>
+                </div>
+
+                <!-- Audio Track -->
+                <div class="flex items-center gap-2">
+                    <div class="w-16 flex-shrink-0 text-[10px] text-pink-400 font-bold text-right pr-2 border-r border-gray-700">AUDIO</div>
+                    <div id="audioTrack" class="flex gap-1 min-w-max items-center h-10 bg-gray-900/50 p-1 rounded-lg border border-gray-800 flex-1">
+                        <span class="text-gray-600 text-xs italic px-4" id="emptyAudioMsg">Audio waveforms will appear here...</span>
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </div>
 
     <script>
-        let movieScenes = [];
-        let isPlayingMovie = false;
+        let masterTimeline = [];
+        let isPlaying = false;
         
         let voices = [];
         window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
-        voices = window.speechSynthesis.getVoices(); 
 
-        async function addSceneToTimeline() {
+        async function orchestrateScene() {
             const prompt = document.getElementById('imagePrompt').value.trim();
             const dialogue = document.getElementById('dialogue').value.trim();
-            const dimensions = document.getElementById('frameSize').value.split('x');
             const motion = document.getElementById('cameraMotion').value;
             const voiceType = document.getElementById('voiceSelect').value;
             
-            if (!prompt) { 
-                alert("⚠️ Please enter an Image Prompt!");
-                return; 
-            }
+            if (!prompt) { alert("Visual Prompt is required!"); return; }
 
-            const btn = document.getElementById('addSceneBtn');
+            const btn = document.getElementById('orchestrateBtn');
             const loadingOverlay = document.getElementById('loadingOverlay');
             
             btn.disabled = true;
-            btn.innerHTML = "⏳ Wait...";
             loadingOverlay.classList.replace("hidden", "flex");
 
-            // THE V2 WORKING ENGINE (Simple & Fast)
-            const finalPrompt = encodeURIComponent(prompt + ", masterpiece, highly detailed");
-            const randomSeed = Math.floor(Math.random() * 100000);
-            const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=${dimensions[0]}&height=${dimensions[1]}&seed=${randomSeed}&nologo=true`;
+            // V2 Fast Core Engine Logic
+            const finalPrompt = encodeURIComponent(prompt + ", masterpiece, highly detailed, 8k");
+            const randomSeed = Math.floor(Math.random() * 999999);
+            const imageUrl = `https://image.pollinations.ai/prompt/${finalPrompt}?width=1920&height=1080&seed=${randomSeed}&nologo=true`;
 
             try {
                 const response = await fetch(imageUrl);
-                if (!response.ok) throw new Error("Render failed");
-                
+                if (!response.ok) throw new Error("API failed");
                 const blob = await response.blob();
                 const blobUrl = URL.createObjectURL(blob);
                 
-                const newSceneId = Date.now();
                 const newScene = {
-                    id: newSceneId,
+                    id: Date.now(),
                     url: blobUrl,
-                    promptText: prompt,
                     dialogue: dialogue,
                     motion: motion,
-                    voiceType: voiceType,
-                    ratio: document.getElementById('frameSize').value
+                    voiceType: voiceType
                 };
                 
-                movieScenes.push(newScene);
-                renderTimelineUI();
+                masterTimeline.push(newScene);
+                renderCapCutTimeline();
                 
-                // Hide Loading & Reset Button
-                loadingOverlay.classList.replace("flex", "hidden");
-                btn.disabled = false;
-                btn.innerHTML = "🚀 Generate Video";
-
-                // Instant Auto-Play
-                playSingleScene(newSceneId);
-
             } catch (error) {
-                loadingOverlay.classList.replace("flex", "hidden");
-                btn.disabled = false;
-                btn.innerHTML = "🚀 Generate Video";
-                alert("❌ Servers are busy. Please click Generate again.");
+                alert("Cloud connection busy. Try again.");
             }
+
+            loadingOverlay.classList.replace("flex", "hidden");
+            btn.disabled = false;
         }
 
-        function renderTimelineUI() {
-            const timeline = document.getElementById('timeline');
-            const emptyMsg = document.getElementById('emptyTimelineMsg');
+        function renderCapCutTimeline() {
+            const vTrack = document.getElementById('videoTrack');
+            const aTrack = document.getElementById('audioTrack');
             const playBtn = document.getElementById('playMovieBtn');
             
-            if(movieScenes.length > 0) {
-                if(emptyMsg) emptyMsg.style.display = 'none';
+            if(masterTimeline.length > 0) {
+                document.getElementById('emptyVideoMsg').style.display = 'none';
+                document.getElementById('emptyAudioMsg').style.display = 'none';
                 playBtn.classList.remove('hidden');
             } else {
-                if(emptyMsg) emptyMsg.style.display = 'block';
+                vTrack.innerHTML = '<span class="text-gray-600 text-xs italic px-4" id="emptyVideoMsg">Video clips will appear here...</span>';
+                aTrack.innerHTML = '<span class="text-gray-600 text-xs italic px-4" id="emptyAudioMsg">Audio waveforms will appear here...</span>';
                 playBtn.classList.add('hidden');
-                timeline.innerHTML = '<div id="emptyTimelineMsg" class="text-gray-500 text-xs italic mx-auto border border-dashed border-gray-700 p-6 rounded-xl bg-gray-900/30">History is empty. Generated scenes will be saved here.</div>';
                 return;
             }
             
-            timeline.innerHTML = '';
+            vTrack.innerHTML = '';
+            aTrack.innerHTML = '';
             
-            movieScenes.forEach((scene, index) => {
-                const card = document.createElement('div');
-                card.className = "min-w-[180px] w-[180px] bg-gray-900 rounded-xl p-2 border border-gray-700 flex-shrink-0 relative group shadow-xl flex flex-col gap-2 cursor-pointer hover:border-blue-500 transition-all hover:-translate-y-1";
-                
-                card.onclick = () => playSingleScene(scene.id);
-                
-                card.innerHTML = `
-                    <div class="flex justify-between items-center px-1">
-                        <span class="text-[10px] text-blue-400 font-bold bg-blue-900/30 px-2 py-0.5 rounded">SCENE ${index + 1}</span>
-                        <button onclick="event.stopPropagation(); deleteScene(${scene.id})" class="text-gray-500 hover:text-red-400 hover:bg-red-900/30 px-1.5 rounded transition-colors text-xs font-bold">✖</button>
-                    </div>
-                    <div class="h-[100px] w-full bg-black rounded-lg overflow-hidden relative shadow-inner">
-                        <img src="${scene.url}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                            <span class="text-3xl drop-shadow-lg">▶️</span>
-                        </div>
-                    </div>
+            masterTimeline.forEach((scene, index) => {
+                // Video Block
+                const vBlock = document.createElement('div');
+                vBlock.className = "h-full w-32 bg-indigo-900/40 border border-indigo-700 rounded overflow-hidden relative flex-shrink-0";
+                vBlock.innerHTML = `
+                    <img src="${scene.url}" class="w-full h-full object-cover opacity-80">
+                    <span class="absolute top-1 left-1 bg-black/70 text-white text-[8px] px-1 rounded">V${index+1}</span>
                 `;
-                timeline.appendChild(card);
+                vTrack.appendChild(vBlock);
+
+                // Audio Block (NotebookLM visual simulation)
+                const aBlock = document.createElement('div');
+                aBlock.className = "h-full w-32 bg-pink-900/30 border border-pink-800 rounded relative flex items-center justify-center flex-shrink-0 overflow-hidden";
+                const isSilent = !scene.dialogue;
+                aBlock.innerHTML = `
+                    <span class="absolute top-0.5 left-1 text-pink-300 text-[8px]">${isSilent ? 'SILENT' : (scene.voiceType === 'male' ? 'HOST 1' : 'HOST 2')}</span>
+                    ${isSilent ? '<div class="w-full h-[1px] bg-pink-900/50"></div>' : '<div class="flex gap-[2px] items-center h-4"><div class="w-1 h-2 bg-pink-500"></div><div class="w-1 h-4 bg-pink-400"></div><div class="w-1 h-3 bg-pink-500"></div><div class="w-1 h-2 bg-pink-600"></div></div>'}
+                `;
+                aTrack.appendChild(aBlock);
             });
         }
 
-        function deleteScene(id) {
-            movieScenes = movieScenes.filter(s => s.id !== id);
-            renderTimelineUI();
-        }
-
         function clearTimeline() {
-            if(confirm("Delete all saved videos?")) {
-                movieScenes = [];
-                renderTimelineUI();
-                document.getElementById('renderedVideo').classList.add("hidden");
-                document.getElementById('monitorPlaceholder').classList.remove("hidden");
-                window.speechSynthesis.cancel();
-            }
+            masterTimeline = [];
+            renderCapCutTimeline();
+            document.getElementById('renderedVideo').classList.add("hidden");
+            document.getElementById('monitorPlaceholder').classList.remove("hidden");
+            window.speechSynthesis.cancel();
         }
 
-        async function playSingleScene(id) {
-            if(isPlayingMovie) return;
-            const scene = movieScenes.find(s => s.id === id);
-            if(!scene) return;
-
-            isPlayingMovie = true;
+        async function playMasterTimeline() {
+            if(masterTimeline.length === 0 || isPlaying) return;
+            isPlaying = true;
             window.speechSynthesis.cancel();
             
-            const badge = document.getElementById('monitorBadge');
-            badge.innerText = `PLAYING NOW`;
-            badge.className = "text-[10px] bg-blue-900 text-blue-400 px-2 py-0.5 rounded border border-blue-700 uppercase tracking-wider";
-            
-            await setupAndPlayScene(scene);
-            
-            isPlayingMovie = false;
-            badge.innerText = "STANDBY";
-            badge.className = "text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700 uppercase tracking-wider";
-        }
-
-        async function playFullMovie() {
-            if(movieScenes.length === 0 || isPlayingMovie) return;
-            isPlayingMovie = true;
-            window.speechSynthesis.cancel();
-            
-            const badge = document.getElementById('monitorBadge');
-            
-            for(let i = 0; i < movieScenes.length; i++) {
-                const scene = movieScenes[i];
-                badge.innerText = `PLAYING SCENE ${i + 1}/${movieScenes.length}`;
-                badge.className = "text-[10px] bg-green-900 text-green-400 px-2 py-0.5 rounded border border-green-700 uppercase tracking-wider font-bold shadow-[0_0_10px_rgba(34,197,94,0.5)]";
-                
-                await setupAndPlayScene(scene);
+            for(let i = 0; i < masterTimeline.length; i++) {
+                await playEngine(masterTimeline[i]);
             }
             
-            isPlayingMovie = false;
-            badge.innerText = "MOVIE FINISHED";
-            badge.className = "text-[10px] bg-purple-900 text-purple-400 px-2 py-0.5 rounded border border-purple-700 uppercase tracking-wider";
+            isPlaying = false;
             setTimeout(() => { 
                 document.getElementById('renderedVideo').classList.add("hidden"); 
                 document.getElementById('monitorPlaceholder').classList.remove("hidden"); 
-                badge.innerText = "STANDBY";
-                badge.className = "text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700 uppercase tracking-wider";
-            }, 2500);
+            }, 1000);
         }
 
-        function setupAndPlayScene(scene) {
+        function playEngine(scene) {
             return new Promise(async (resolve) => {
                 const imgElement = document.getElementById('renderedVideo');
                 const placeholder = document.getElementById('monitorPlaceholder');
-                const container = document.getElementById('videoContainer');
                 
                 placeholder.classList.add("hidden");
-                
-                container.className = `w-full bg-black rounded-b-xl flex items-center justify-center relative overflow-hidden flex-1 shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] ${scene.ratio === '1920x1080' ? 'ratio-16-9' : 'ratio-9-16'}`;
-                
                 imgElement.src = scene.url;
                 imgElement.className = 'absolute inset-0 w-full h-full object-cover hidden';
                 imgElement.offsetHeight; 
                 imgElement.className = `absolute inset-0 w-full h-full object-cover ${scene.motion}`;
                 
                 if(!scene.dialogue) {
-                    setTimeout(resolve, 5000); 
+                    setTimeout(resolve, 4000); 
                 } else {
                     const speech = new SpeechSynthesisUtterance(scene.dialogue);
-                    const isFemale = scene.voiceType === 'female';
-                    let selectedVoice = voices.find(v => v.lang.includes('en-US') && (isFemale ? (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira')) : (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david'))));
-                    
+                    let selectedVoice = voices.find(v => v.lang.includes('en-US') && (scene.voiceType === 'female' ? v.name.toLowerCase().includes('female') : v.name.toLowerCase().includes('male')));
                     if(selectedVoice) speech.voice = selectedVoice;
-                    speech.rate = 0.92; 
-                    
+                    speech.rate = 0.95; 
                     speech.onend = resolve;
                     speech.onerror = resolve; 
-                    
                     window.speechSynthesis.speak(speech);
                 }
             });
         }
     </script>
 </body>
-    </html>
+                        </html>
     
